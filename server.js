@@ -1,14 +1,8 @@
 //Dependencies
 const inquirer = require('inquirer');//inquirer not express
-const mysql = require('mysql12');
+const mysql = require('mysql2');
 const path = require('path');
-
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-//Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+const table = require('console.table'); //displays tabular data as a table.
 
 //Connecting to database
 const db = mysql.createConnection(
@@ -20,7 +14,7 @@ const db = mysql.createConnection(
         password: '1J@y6983nee!',
         database: 'employee_db'
     },
-    console.log(`Connected to the employee_db database.`)
+    console.log(`Connected to the employee database.`)
 );
 
 //When app opens, presented with: 
@@ -84,7 +78,3 @@ const questions = [
 
 
 
-//Specifying port number
-app.listen(PORT, () => {
-    console.log(`App listening at ${PORT}`)
-});
