@@ -13,11 +13,11 @@ app.use(express.json());
 //Connecting to database
 const db = mysql.createConnection(
     {
-        host: 'localhost',
+        host: '127.0.0.1',
         // MySQL username,
         user: 'root',
         // MySQL password
-        password: '',
+        password: '1J@y6983nee!',
         database: 'employee_db'
     },
     console.log(`Connected to the employee_db database.`)
@@ -34,7 +34,7 @@ const db = mysql.createConnection(
 const questions = [
     {
         type: 'list',
-        name: 'introduction'
+        name: 'introduction',
         message: 'Hello, what would you like to do?',
         choices: [
             'View all Departments',
@@ -45,12 +45,19 @@ const questions = [
             'Add an Employee',
             'Update an Employee Role'
         ]
+//When view all departments is chosen, presented with:
+//formatted table showing department names and department ids        
+        // validate: (response) => {
+        //     if(response === 'View all Departments') {
+        //         return 
+        //     }            
+        // }
     },
 ];
 
 
-//When view all departments is chosen, presented with:
-//formatted table showing department names and department ids
+
+
 
 //When view all roles is chosen, presented with:
 //the job title, role id, the department that role belongs to, and the salary for that role
