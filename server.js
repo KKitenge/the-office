@@ -27,48 +27,59 @@ const db = mysql.createConnection(
 //update an employee role
 //function
 //switch statement, if match, code is run
-const questions = () => {
-    .prompt([
-        {
-        type: 'list',
-        name: 'introduction',
-        message: 'Hello, what would you like to do?',
-        choices: [
-            'View all Departments',
-            'View all Roles',
-            'View all Employees',
-            'Add a Department',
-            'Add a Role',
-            'Add an Employee',
-            'Update an Employee Role'
-            ]
-        }
-    ])
-    .then((answer) => {
-        switch (answer.introduction) {
-            case 'View all Departments':
-                viewDepartments();
-                break;
-            case 'View all Roles':
-                viewRoles();
-                break;
-            case 'View all Employees':
-                viewEmployees();
-                break;
-            case 'Add a Department':
-                addDepartment();
-                break;
-            case 'Add a Role':
-                addRole();
-                break;
-            case 'Add an Employee':
-                addEmployee();
-                break;
-            case 'Update an Employee Role':
-                updateEmployeeRole();                
-        }
-    })
-} 
+function questions() {
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                name: 'introduction',
+                message: 'Hello, what would you like to do?',
+                choices: [
+                    'View all Departments',
+                    'View all Roles',
+                    'View all Employees',
+                    'Add a Department',
+                    'Add a Role',
+                    'Add an Employee',
+                    'Update an Employee Role'
+                ]
+            }
+        ])
+        .then((answer) => {
+            switch (answer.introduction) {
+                case 'View all Departments':
+                    viewDepartments();
+                    break;
+                case 'View all Roles':
+                    viewRoles();
+                    break;
+                case 'View all Employees':
+                    viewEmployees();
+                    break;
+                case 'Add a Department':
+                    addDepartment();
+                    break;
+                case 'Add a Role':
+                    addRole();
+                    break;
+                case 'Add an Employee':
+                    addEmployee();
+                    break;
+                case 'Update an Employee Role':
+                    updateEmployeeRole();
+            }
+        })
+};
+
+function viewDepartments() {
+    db.query('SELECT id, name from department', (err, results) => {
+        if (err) throw err;
+        console.table(results);
+        questions();
+    });
+};
+
+questions();
 //     {
         
 //When view all departments is chosen, presented with:
