@@ -71,12 +71,22 @@ function questions() {
         })
 };
 
+//querying data from one table
 function viewDepartments() {
-    db.query('SELECT id, name from department', (err, results) => {
+    db.query('SELECT id, name FROM department', (err, results) => {
         if (err) throw err;
         console.table(results);
         questions();
     });
+};
+
+//querying data from multiple tables
+function viewRoles() {
+    db.query('SELECT role.id, role.title, role.salary, department.name AS department FROM role LEFT JOIN department ON role.department_id = department.id', (err, results) => {
+        if (err) throw err;
+        console.table(results);
+        questions();
+    })
 };
 
 questions();
