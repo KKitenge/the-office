@@ -21,16 +21,6 @@ const db = mysql.createConnection(
 //array showing the up to date department list, including newly added depts.
 let departmentList = [];
 
-//When app opens, presented with: 
-//view all departments, 
-//view all roles, 
-//view all employees, 
-//add a department, 
-//add a role, 
-//add an employee, 
-//update an employee role
-//function
-//switch statement, if match, code is run
 function questions() {
     inquirer
         .prompt([
@@ -117,7 +107,7 @@ function viewEmployees() {
 };
 
 //assistance from tutor, add new dept and role 
-    //Insert into now works for both functions
+//Insert into now works for both functions
 function addDepartment() {
     inquirer
         .prompt([
@@ -199,70 +189,50 @@ function createManagerList(callback) {
 
 function addEmployee() {
     createManagerList((managerList) => {
-    inquirer
-        .prompt([
-            {
-                type: 'input',
-                name: 'firstName',
-                message: 'Enter the Employee first name: ',
-            },
-            {
-                type: 'input',
-                name: 'lastName',
-                message: 'Enter the Employee last name: ',
-            },
-            {
-                type: 'input',
-                name: 'role',
-                message: 'Enter the Employee role: ',
-            },
-            {
-                type: 'list',
-                name: 'manager',
-                message: 'Choose the manager for the Employee: ',
-                choices: managerList,
-            }
-        ])
-        .then((answer) => {
-            const newFirstName = answer.firstName;
-            const newLastName = answer.lastName;
-            const newRole = answer.role;
-            const newManager = answer.manager;
-            db.query(`INSERT INTO employee(first_name, last_name, role_id, manager_id)
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'firstName',
+                    message: 'Enter the Employee first name: ',
+                },
+                {
+                    type: 'input',
+                    name: 'lastName',
+                    message: 'Enter the Employee last name: ',
+                },
+                {
+                    type: 'input',
+                    name: 'role',
+                    message: 'Enter the Employee role: ',
+                },
+                {
+                    type: 'list',
+                    name: 'manager',
+                    message: 'Choose the manager for the Employee: ',
+                    choices: managerList,
+                }
+            ])
+            .then((answer) => {
+                const newFirstName = answer.firstName;
+                const newLastName = answer.lastName;
+                const newRole = answer.role;
+                const newManager = answer.manager;
+                db.query(`INSERT INTO employee(first_name, last_name, role_id, manager_id)
             SELECT '${newFirstName}', '${newLastName}', '${newRole}', '${newManager}';`,
-            (err, results) => {
-                if (err) throw err;
-                console.log('')
-                console.log(`The Employee, ${newFirstName} ${newLastName}, was added.`)
-                questions();
-            })
-        });
+                    (err, results) => {
+                        if (err) throw err;
+                        console.log('')
+                        console.log(`The Employee, ${newFirstName} ${newLastName}, was added.`)
+                        questions();
+                    })
+            });
     });
 };
 
-// createDepartmentList();
 questions();
 
 
-
-
-//When view all roles is chosen, presented with: Done
-//the job title, role id, the department that role belongs to, and the salary for that role
-
-//When view all employees is chosen, presented with: Done
-//a formatted table showing employee ids, first, last names, job titles, departments, salaries, and managers
-
-//When a department is added, prompted to: Done
-//enter the name of the department and that department is added to the database
-
-//When a role is added, prompted to:
-//enter the name, salary, and department for the role and that role is added to the database
-
-//When an employee is added, prompted to:
-//enter first name, last name, role, and manager, and that employee is added to the database
-
-//When action is taken to update an employee role:
-//prompted to select an employee to update and their new role and info is updated in the database 
 
 
 

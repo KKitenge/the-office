@@ -1,25 +1,53 @@
 # the-office
 
-# User Story
-* AS A business owner
-* I WANT to be able to view and manage the departments, roles, and employees in my company
-* SO THAT I can organize and plan my business
+# Description
+Applicatition that gives a user the ability to view and edit specific information in a business portal.
 
-# Acceptance Criteria
-* GIVEN a command-line application that accepts user input
-* WHEN I start the application
-* * THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
-* WHEN I choose to view all departments
-* * THEN I am presented with a formatted table showing department names and department ids
-* WHEN I choose to view all roles
-* * THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
-* WHEN I choose to view all employees
-* * THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
-* WHEN I choose to add a department
-* * THEN I am prompted to enter the name of the department and that department is added to the database
-* WHEN I choose to add a role
-* * THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
-* WHEN I choose to add an employee
-* * THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
-* WHEN I choose to update an employee role
-* * THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
+
+# Table of Contents
+* [Technology Used](#technology-used)
+* [Usage](#usage)
+* [Learning Points](#learning-points)
+* [Credits](#credits)
+* [License](#License)
+
+## Technology Used
+* [Git](https://git-scm.com/)
+* [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+* [NodeJS](https://nodejs.org/en)
+* [Inquirer](https://www.npmjs.com/package/inquirer)
+* [Node MySQL 2](https://www.npmjs.com/package/mysql2)
+* [console.table](https://www.npmjs.com/package/console.table)
+
+## Usage
+In the terminal, run node server.js and answer a set of questions within a prompt. The answers are logged and information is viewed or generated.
+[Video link](https://app.screencast.com/Ne6RhL06uMC8F)
+
+## Learning Points
+* Syntax is extremely important
+* Reading a diagram and converting that into the proper Primary/Foreign Key constraints and Groups was a bit hard. 
+* Translating what I was seeing into JS was also a bit difficult and I didn't accomplish the full requirements.  
+  
+For Example, in the MySql shell, the table view for employees included all information:  
+  
+  ![mySql](/assets/sqlemptable.png)  
+    
+But I couldn't get it to show in the terminal and wasn't able to correct it.  
+    ![terminal](/assets/terminalemptable.png)  
+
+this then affected adding an employee, as an error was received. With more time, this can be understood and corrected.
+
+
+## Credits
+* Tutoring assisted with understanding concepts, especially associated with adding Departments and Roles.
+* [W3Schools.com](https://www.w3schools.com)
+* [MDM Web Docs](https://developer.mozilla.org/)
+
+
+## License
+[MIT](https://opensource.org/license/mit/) License
+
+
+## Author Info
+K. Kitenge
+* [Github](https://github.com/KKitenge)
