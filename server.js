@@ -11,7 +11,7 @@ const db = mysql.createConnection(
         // MySQL username,
         user: 'root',
         // MySQL password
-        password: '1J@y6983nee!',
+        password: 'P@ssword9',
         database: 'employee_db'
     },
     console.log(`Connected to the employee database.`)
@@ -89,7 +89,25 @@ function viewRoles() {
     })
 };
 
+function viewEmployees() {
+    db.query(`SELECT 
+    employee.id, 
+    employee.first_name, 
+    employee.last_name, 
+    role.title, 
+    role.salary, 
+    department.name AS department 
+    FROM employee LEFT JOIN role ON employee.role_id = role.id 
+    LEFT JOIN department ON role.department_id = department.id 
+    LEFT JOIN employee AS manager ON employee.manager_id = manager.id`, (err, results) => {
+        if (err) throw err;
+        console.table(results);
+        questions();
+    })
+};
+
 questions();
+
 //     {
         
 //When view all departments is chosen, presented with:
