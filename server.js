@@ -1,7 +1,7 @@
 //Dependencies
 const inquirer = require('inquirer');//inquirer not express
 const mysql = require('mysql2');
-const path = require('path');
+// const path = require('path');
 const table = require('console.table'); //displays tabular data as a table.
 
 //Connecting to database
@@ -82,7 +82,12 @@ function viewDepartments() {
 
 //querying data from multiple tables
 function viewRoles() {
-    db.query('SELECT role.id, role.title, role.salary, department.name AS department FROM role LEFT JOIN department ON role.department_id = department.id', (err, results) => {
+    db.query(`SELECT 
+    role.id, 
+    role.title, 
+    role.salary, 
+    department.name AS department 
+    FROM role LEFT JOIN department ON role.department_id = department.id`, (err, results) => {
         if (err) throw err;
         console.table(results);
         questions();
@@ -106,28 +111,55 @@ function viewEmployees() {
     })
 };
 
+//Isssues
+    //
+function addDepartment() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'newDepartment',
+                message: 'Enter the new department: ',
+            },
+        ])
+        .then((answer) => {
+            const newDepartment = answer.newDepartment;
+            INSERT INTO department(newDepartment) VALUES('');
+            db.query(newDepartment, (err, results) => {
+                if (err) throw err;
+                questions();
+            }
+        });
+};
+
+function addRole() {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Enter the new title role: ',
+        },
+    ])
+    .then((answer) => {
+        const newRole = answer.newRole;
+        INSERT INTO role(newRole) VALUES('');
+        db.query(newRole, (err, results) => {
+            if (err) throw err;
+            questions();
+        }
+    });
+};
+
 questions();
 
-//     {
-        
-//When view all departments is chosen, presented with:
-//formatted table showing department names and department ids        
-//         validate: (response) => {
-//             if(response === 'View all Departments') {
-//                 return 
-//             }            
-//         }
-    // };
-// ];
 
 
 
-
-
-//When view all roles is chosen, presented with:
+//When view all roles is chosen, presented with: Done
 //the job title, role id, the department that role belongs to, and the salary for that role
 
-//When view all employees is chosen, presented with:
+//When view all employees is chosen, presented with: Done
 //a formatted table showing employee ids, first, last names, job titles, departments, salaries, and managers
 
 //When a department is added, prompted to:
