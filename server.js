@@ -4,6 +4,7 @@ const mysql = require('mysql2');
 // const path = require('path');
 const table = require('console.table'); //displays tabular data as a table.
 
+
 //Connecting to database
 const db = mysql.createConnection(
     {
@@ -16,6 +17,9 @@ const db = mysql.createConnection(
     },
     console.log(`Connected to the employee database.`)
 );
+
+//array showing the up to date department list, including newly added depts.
+let departmentList = []
 
 //When app opens, presented with: 
 //view all departments, 
@@ -75,8 +79,18 @@ function questions() {
 function viewDepartments() {
     db.query('SELECT id, name FROM department', (err, results) => {
         if (err) throw err;
+        console.log(results);
         console.table(results);
         questions();
+    });
+};
+
+//assistance from tutor, map method creating a new array from results
+function createDepartmentList() {
+    db.query('SELECT id, name FROM department', (err, results) => {
+        if (err) throw err;
+        departmentList = results.map(department => (department.name))
+        console.log(departmentList);
     });
 };
 
@@ -111,8 +125,8 @@ function viewEmployees() {
     })
 };
 
-//Isssues
-    //
+//assistance from tutor, add new dept and role 
+    //Insert into now works for both functions
 function addDepartment() {
     inquirer
         .prompt([
@@ -124,11 +138,14 @@ function addDepartment() {
         ])
         .then((answer) => {
             const newDepartment = answer.newDepartment;
-            INSERT INTO department(newDepartment) VALUES('');
-            db.query(newDepartment, (err, results) => {
-                if (err) throw err;
-                questions();
-            }
+            db.query(`INSERT INTO department(name) VALUES('${newDepartment}');`
+                , (err, results) => {
+                    if (err) throw err;
+                    console.log('')
+                    console.log(`The new department, ${newDepartment}, was added.`)
+                    console.log('')
+                    questions();
+                })
         });
 };
 
@@ -140,17 +157,34 @@ function addRole() {
             name: 'title',
             message: 'Enter the new title role: ',
         },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Enter the salary: ',
+        },
+        {
+            type: 'list',
+            name: 'department',
+            message: 'Choose the department for the new role: ',
+            choices: departmentList
+        }
     ])
     .then((answer) => {
-        const newRole = answer.newRole;
-        INSERT INTO role(newRole) VALUES('');
-        db.query(newRole, (err, results) => {
+        const newTitle = answer.title; 
+        const newSalary = answer.salary;
+        const newDepartment = answer.department;       
+        db.query(`INSERT INTO role(title, salary, department_id) VALUES('${newTitle}', '${newSalary}', '${newDepartment}');`
+            , (err, results) => {
             if (err) throw err;
+            console.log('')
+            console.log(`The new role, ${newRole}, was added.`)
+            console.log('')
             questions();
-        }
+        })
     });
 };
 
+createDepartmentList();
 questions();
 
 
