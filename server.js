@@ -19,7 +19,7 @@ const db = mysql.createConnection(
 );
 
 //array showing the up to date department list, including newly added depts.
-let departmentList = []
+let departmentList = [];
 
 //When app opens, presented with: 
 //view all departments, 
@@ -85,14 +85,15 @@ function viewDepartments() {
     });
 };
 
-//assistance from tutor, map method creating a new array from results
-function createDepartmentList() {
-    db.query('SELECT id, name FROM department', (err, results) => {
-        if (err) throw err;
-        departmentList = results.map(department => (department.name))
-        console.log(departmentList);
-    });
-};
+// //assistance from tutor, map method creating a new array from results
+// function createDepartmentList() {
+//     db.query('SELECT id, name FROM department', (err, results) => {
+//         if (err) throw err;
+//         departmentList = results.map(department => (department.name));
+//         console.log(departmentList);
+//         resolve();
+//     });
+// };
 
 //querying data from multiple tables
 function viewRoles() {
@@ -149,42 +150,55 @@ function addDepartment() {
         });
 };
 
-function addRole() {
-    inquirer
-    .prompt([
-        {
-            type: 'input',
-            name: 'title',
-            message: 'Enter the new title role: ',
-        },
-        {
-            type: 'input',
-            name: 'salary',
-            message: 'Enter the salary: ',
-        },
-        {
-            type: 'list',
-            name: 'department',
-            message: 'Choose the department for the new role: ',
-            choices: departmentList
-        }
-    ])
-    .then((answer) => {
-        const newTitle = answer.title; 
-        const newSalary = answer.salary;
-        const newDepartment = answer.department;       
-        db.query(`INSERT INTO role(title, salary, department_id) VALUES('${newTitle}', '${newSalary}', '${newDepartment}');`
-            , (err, results) => {
-            if (err) throw err;
-            console.log('')
-            console.log(`The new role, ${newRole}, was added.`)
-            console.log('')
-            questions();
-        })
+//assistance from tutor, map method creating a new array from results
+//callback needed to pass departmentList into addRole
+//sql modifying data portion of addRole altered so there was no error when dept name was chosen instead of an integer that was epected. 
+function createDepartmentList(callback) {
+    db.query('SELECT id, name FROM department', (err, results) => {
+        if (err) throw err;
+        departmentList = results.map(department => (department.name));
+        callback(departmentList);
     });
 };
 
-createDepartmentList();
+function addRole() {
+    createDepartmentList((departmentList) => {
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'title',
+                    message: 'Enter the new title role: ',
+                },
+                {
+                    type: 'input',
+                    name: 'salary',
+                    message: 'Enter the salary: ',
+                },
+                {
+                    type: 'list',
+                    name: 'department',
+                    message: 'Choose the department for the new role: ',
+                    choices: departmentList,
+                }
+            ])
+            .then((answer) => {
+                const newTitle = answer.title;
+                const newSalary = answer.salary;
+                const newDepartment = answer.department;
+                db.query(`INSERT INTO role(title, salary, department_id) SELECT '${newTitle}', '${newSalary}', id FROM department WHERE name = '${newDepartment}';`,
+                    (err, results) => {
+                        if (err) throw err;
+                        console.log('')
+                        console.log(`The new role, ${newTitle}, was added.`)
+                        console.log('')
+                        questions();
+                    })
+            });
+    });
+};
+
+// createDepartmentList();
 questions();
 
 
@@ -196,7 +210,7 @@ questions();
 //When view all employees is chosen, presented with: Done
 //a formatted table showing employee ids, first, last names, job titles, departments, salaries, and managers
 
-//When a department is added, prompted to:
+//When a department is added, prompted to: Done
 //enter the name of the department and that department is added to the database
 
 //When a role is added, prompted to:
