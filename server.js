@@ -85,16 +85,6 @@ function viewDepartments() {
     });
 };
 
-// //assistance from tutor, map method creating a new array from results
-// function createDepartmentList() {
-//     db.query('SELECT id, name FROM department', (err, results) => {
-//         if (err) throw err;
-//         departmentList = results.map(department => (department.name));
-//         console.log(departmentList);
-//         resolve();
-//     });
-// };
-
 //querying data from multiple tables
 function viewRoles() {
     db.query(`SELECT 
@@ -195,6 +185,58 @@ function addRole() {
                         questions();
                     })
             });
+    });
+};
+
+//following AddRole function
+function createManagerList(callback) {
+    db.query('SELECT id, manager_id FROM employee', (err, results) => {
+        if (err) throw err;
+        managerList = results.map(employee => (employee.manager_id));
+        callback(managerList);
+    });
+};
+
+function addEmployee() {
+    createManagerList((managerList) => {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'firstName',
+                message: 'Enter the Employee first name: ',
+            },
+            {
+                type: 'input',
+                name: 'lastName',
+                message: 'Enter the Employee last name: ',
+            },
+            {
+                type: 'input',
+                name: 'role',
+                message: 'Enter the Employee role: ',
+            },
+            {
+                type: 'list',
+                name: 'manager',
+                message: 'Choose the manager for the Employee: ',
+                choices: managerList,
+            }
+        ])
+        .then((answer) => {
+            const newFirstName = answer.firstName;
+            const newLastName = answer.lastName;
+            const newRole = answer.role;
+            const newManager = answer.manager;
+            db.query(`INSERT INTO employee(first_name, last_name, role_id, manager_id)
+            SELECT '${newFirstName}', '${newLastName}', '${newRole}', '${newManager}';`,
+            (err, results) => {
+                if (err) throw err;
+                console.log('')
+                console.log(`The Employee, ${newFirstName} ${newLastName}, was added.`)
+                questions();
+            })
+        });
     });
 };
 
